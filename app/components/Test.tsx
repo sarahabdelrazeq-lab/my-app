@@ -11,6 +11,8 @@ const Dictaphone = () => {
     listening,
     resetTranscript,
     browserSupportsSpeechRecognition,
+    browserSupportsContinuousListening,
+    isMicrophoneAvailable,
   } = config;
   console.log("configconfigconfig", config);
 
@@ -21,24 +23,14 @@ const Dictaphone = () => {
   // Start listening with Arabic language
   const startListeningArabic = () => {
     SpeechRecognition.startListening({
-      language: "ar-SA", // Arabic (Saudi Arabia)
-      continuous: true,
-      interimResults: true,
+      language: "ar-SA",
     });
   };
 
   // You can also create different functions for different Arabic dialects
   const startListeningEgyptian = () => {
     SpeechRecognition.startListening({
-      language: "ar-EG", // Arabic (Egypt)
-      continuous: true,
-      interimResults: true,
-    });
-  };
-
-  const startListeningUAE = () => {
-    SpeechRecognition.startListening({
-      language: "ar-AE", // Arabic (UAE)
+      language: "ar-SA",
       continuous: true,
       interimResults: true,
     });
@@ -54,7 +46,6 @@ const Dictaphone = () => {
           الميكروفون: {listening ? "مفعل" : "معطل"}
         </p>
       </div>
-
       <div className="flex flex-wrap gap-2 mb-4">
         <button
           onClick={startListeningArabic}
@@ -67,15 +58,9 @@ const Dictaphone = () => {
           onClick={startListeningEgyptian}
           className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors"
         >
-          ابدأ (مصر)
+          ابدأ (مع استمرار)
         </button>
 
-        <button
-          onClick={startListeningUAE}
-          className="px-4 py-2 bg-purple-500 text-white rounded hover:bg-purple-600 transition-colors"
-        >
-          ابدأ (الإمارات)
-        </button>
 
         <button
           onClick={SpeechRecognition.stopListening}
@@ -91,13 +76,11 @@ const Dictaphone = () => {
           مسح
         </button>
       </div>
-
       <div className="p-4 bg-gray-50 rounded border min-h-[100px]">
         <p className="text-gray-800 leading-relaxed">
           {transcript || "ابدأ بالتحدث..."}
         </p>
       </div>
-
       {listening && (
         <div className="mt-3 text-center">
           <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800">
@@ -105,6 +88,11 @@ const Dictaphone = () => {
           </span>
         </div>
       )}
+      browserSupportsSpeechRecognition:{" "}
+      {browserSupportsSpeechRecognition ? "true" : "false"} <br />
+      browserSupportsContinuousListening:{" "}
+      {browserSupportsContinuousListening ? "true" : "false"} <br />
+      isMicrophoneAvailable: {isMicrophoneAvailable ? "true" : "false"} <br />
     </div>
   );
 };
