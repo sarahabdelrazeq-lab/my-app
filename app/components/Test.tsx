@@ -70,9 +70,7 @@ const Dictaphone = () => {
   } = config;
   console.log("configconfigconfig", config);
 
-  if (!browserSupportsSpeechRecognition) {
-    return <span>المتصفح لا يدعم التعرف على الكلام.</span>;
-  }
+
 
   // Start listening with Arabic language
   const startListeningArabic = () => {
