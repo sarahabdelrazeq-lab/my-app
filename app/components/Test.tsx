@@ -4,6 +4,60 @@ import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
 
+class MySpeechRecognitionPolyfill {
+  private recognition: SpeechRecognition;
+
+  constructor() {
+    const NativeRecognition =
+      (window as any).SpeechRecognition ||
+      (window as any).webkitSpeechRecognition;
+
+    if (!NativeRecognition) {
+      throw new Error("Web Speech API is not supported in this browser.");
+    }
+
+    this.recognition = new NativeRecognition();
+    this.recognition.continuous = true;
+    this.recognition.interimResults = true;
+    this.recognition.lang = "en-US";
+
+    // forward all native events
+    this.onstart = null;
+    this.onend = null;
+    this.onerror = null;
+    this.onresult = null;
+
+    this.recognition.onstart = (e) => this.onstart?.(e);
+    this.recognition.onend = (e) => this.onend?.(e);
+    this.recognition.onerror = (e) => this.onerror?.(e);
+    this.recognition.onresult = (e) => this.onresult?.(e);
+  }
+
+  // Required by W3C spec
+  start() {
+    this.recognition.start();
+  }
+  stop() {
+    this.recognition.stop();
+  }
+  abort() {
+    this.recognition.abort();
+  }
+
+  // Event handler placeholders
+  onstart: ((e: Event) => void) | null;
+  onend: ((e: Event) => void) | null;
+  onerror: ((e: SpeechRecognitionErrorEvent) => void) | null;
+  onresult: ((e: SpeechRecognitionEvent) => void) | null;
+
+  // Optional: expose config setters
+  set lang(language: string) {
+    this.recognition.lang = language;
+  }
+}
+
+SpeechRecognition.applyPolyfill(MySpeechRecognitionPolyfill);
+
 const Dictaphone = () => {
   const config = useSpeechRecognition();
   const {
@@ -60,7 +114,6 @@ const Dictaphone = () => {
         >
           ابدأ (مع استمرار)
         </button>
-
 
         <button
           onClick={SpeechRecognition.stopListening}
