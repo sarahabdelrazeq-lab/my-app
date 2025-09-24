@@ -1,62 +1,8 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
-
-class MySpeechRecognitionPolyfill {
-  private recognition: SpeechRecognition;
-
-  constructor() {
-    const NativeRecognition =
-      (window as any).SpeechRecognition ||
-      (window as any).webkitSpeechRecognition;
-
-    if (!NativeRecognition) {
-      throw new Error("Web Speech API is not supported in this browser.");
-    }
-
-    this.recognition = new NativeRecognition();
-    this.recognition.continuous = true;
-    this.recognition.interimResults = true;
-    this.recognition.lang = "en-US";
-
-    // forward all native events
-    this.onstart = null;
-    this.onend = null;
-    this.onerror = null;
-    this.onresult = null;
-
-    this.recognition.onstart = (e) => this.onstart?.(e);
-    this.recognition.onend = (e) => this.onend?.(e);
-    this.recognition.onerror = (e) => this.onerror?.(e);
-    this.recognition.onresult = (e) => this.onresult?.(e);
-  }
-
-  // Required by W3C spec
-  start() {
-    this.recognition.start();
-  }
-  stop() {
-    this.recognition.stop();
-  }
-  abort() {
-    this.recognition.abort();
-  }
-
-  // Event handler placeholders
-  onstart: ((e: Event) => void) | null;
-  onend: ((e: Event) => void) | null;
-  onerror: ((e: SpeechRecognitionErrorEvent) => void) | null;
-  onresult: ((e: SpeechRecognitionEvent) => void) | null;
-
-  // Optional: expose config setters
-  set lang(language: string) {
-    this.recognition.lang = language;
-  }
-}
-
-SpeechRecognition.applyPolyfill(MySpeechRecognitionPolyfill);
 
 const Dictaphone = () => {
   const config = useSpeechRecognition();
@@ -69,8 +15,7 @@ const Dictaphone = () => {
     isMicrophoneAvailable,
   } = config;
   console.log("configconfigconfig", config);
-
-
+  const [micPermission, setMicPermission] = useState("unknown");
 
   // Start listening with Arabic language
   const startListeningArabic = () => {
@@ -87,6 +32,31 @@ const Dictaphone = () => {
       interimResults: true,
     });
   };
+
+  useEffect(() => {
+    async function checkPermission() {
+      // First, check if Permissions API is supported
+      if (navigator.permissions) {
+        try {
+          const result = await navigator.permissions.query({
+            name: "microphone",
+          });
+          setMicPermission(result.state);
+
+          // Listen for changes
+          result.onchange = () => {
+            setMicPermission(result.state);
+          };
+        } catch (err) {
+          console.error("Permission API error:", err);
+        }
+      } else {
+        console.warn("Permissions API not supported in this browser");
+      }
+    }
+
+    checkPermission();
+  }, []);
 
   return (
     <div
@@ -144,6 +114,7 @@ const Dictaphone = () => {
       browserSupportsContinuousListening:{" "}
       {browserSupportsContinuousListening ? "true" : "false"} <br />
       isMicrophoneAvailable: {isMicrophoneAvailable ? "true" : "false"} <br />
+      micPermission: {micPermission} <br />
     </div>
   );
 };
