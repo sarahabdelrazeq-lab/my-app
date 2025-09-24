@@ -13,6 +13,7 @@ const Dictaphone = () => {
     browserSupportsSpeechRecognition,
     browserSupportsContinuousListening,
     isMicrophoneAvailable,
+    interimTranscript,
   } = config;
   console.log("configconfigconfig", config);
   const [micPermission, setMicPermission] = useState("unknown");
@@ -38,17 +39,18 @@ const Dictaphone = () => {
       // First, check if Permissions API is supported
       if (navigator.permissions) {
         try {
-          const result = await navigator.permissions.query({
-            name: "microphone",
-          });
-          setMicPermission(result.state);
-
-          // Listen for changes
-          result.onchange = () => {
-            setMicPermission(result.state);
-          };
-        } catch (err) {
-          console.error("Permission API error:", err);
+          // Try to request microphone
+          await navigator.mediaDevices.getUserMedia({ audio: true });
+          setMicPermission("granted");
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (err: any) {
+          if (err.name === "NotAllowedError") {
+            setMicPermission("denied");
+          } else if (err.name === "NotFoundError") {
+            setMicPermission("no device");
+          } else {
+            setMicPermission("error");
+          }
         }
       } else {
         console.warn("Permissions API not supported in this browser");
@@ -114,7 +116,9 @@ const Dictaphone = () => {
       browserSupportsContinuousListening:{" "}
       {browserSupportsContinuousListening ? "true" : "false"} <br />
       isMicrophoneAvailable: {isMicrophoneAvailable ? "true" : "false"} <br />
+      transcript: {transcript} <br />
       micPermission: {micPermission} <br />
+      interimTranscript: {interimTranscript} <br />
     </div>
   );
 };
