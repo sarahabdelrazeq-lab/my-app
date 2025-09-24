@@ -17,6 +17,7 @@ const Dictaphone = () => {
   } = config;
   console.log("configconfigconfig", config);
   const [micPermission, setMicPermission] = useState("unknown");
+  const [micPermission2, setMicPermission2] = useState<MediaStream | null>(null);
 
   // Start listening with Arabic language
   const startListeningArabic = () => {
@@ -40,9 +41,12 @@ const Dictaphone = () => {
       if (navigator.permissions) {
         try {
           // Try to request microphone
-          await navigator.mediaDevices.getUserMedia({ audio: true });
+          const test = await navigator.mediaDevices.getUserMedia({
+            audio: true,
+          });
           setMicPermission("granted");
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          setMicPermission2(test);
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (err: any) {
           if (err.name === "NotAllowedError") {
             setMicPermission("denied");
@@ -119,6 +123,7 @@ const Dictaphone = () => {
       transcript: {transcript} <br />
       micPermission: {micPermission} <br />
       interimTranscript: {interimTranscript} <br />
+      micPermission2: {JSON.stringify(micPermission2)} <br />
     </div>
   );
 };
