@@ -33,6 +33,7 @@ const Dictaphone = () => {
     SpeechRecognition.startListening({
       language: "ar-SA",
       continuous: true,
+      // interimResults: true,
     });
   };
 
@@ -61,6 +62,11 @@ const Dictaphone = () => {
   const onClick = useCallback(async () => {
     await checkPermission();
     startListeningArabic();
+  }, [checkPermission]);
+
+  const onClick2 = useCallback(async () => {
+    await checkPermission();
+    startListeningEgyptian();
   }, [checkPermission]);
 
   useEffect(() => {
@@ -97,7 +103,7 @@ const Dictaphone = () => {
         </button>
 
         <button
-          onClick={startListeningEgyptian}
+          onClick={onClick2}
           className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors"
         >
           ابدأ (مع استمرار)
