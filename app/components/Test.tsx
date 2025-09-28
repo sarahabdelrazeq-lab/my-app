@@ -145,6 +145,7 @@ const Dictaphone = () => {
       micPermission: {micPermission} <br />
       interimTranscript: {interimTranscript} <br />
       micPermission2: {JSON.stringify(micPermission2)} <br />
+      micStatus: {micStatus} <br/>
     </div>
   );
 };
