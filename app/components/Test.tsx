@@ -44,7 +44,7 @@ const Dictaphone = () => {
         .then((result) => {
           setMicStatus(result.state);
 
-          result.onchange = () => setMicStatus(result.state);
+          result.onchange = () => setMicStatus(result.state || 'sarah');
         })
         .catch(() => setMicStatus("unsupported"));
     } else {
