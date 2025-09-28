@@ -56,12 +56,10 @@ const Dictaphone = () => {
   }, []);
 
   const onClick = useCallback(async () => {
-    await checkPermission();
     startListeningArabic();
   }, [checkPermission]);
 
   const onClick2 = useCallback(async () => {
-    await checkPermission();
     startListeningEgyptian();
   }, [checkPermission]);
 
