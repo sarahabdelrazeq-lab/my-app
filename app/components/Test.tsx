@@ -33,7 +33,6 @@ const Dictaphone = () => {
     SpeechRecognition.startListening({
       language: "ar-SA",
       continuous: true,
-      interimResults: true,
     });
   };
 
