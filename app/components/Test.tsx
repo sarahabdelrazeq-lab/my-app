@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
@@ -17,7 +17,12 @@ const Dictaphone = () => {
   } = config;
   console.log("configconfigconfig", config);
   const [micPermission, setMicPermission] = useState("unknown");
-  const [micPermission2, setMicPermission2] = useState<MediaStream | null>(null);
+  const [micPermission2, setMicPermission2] = useState<MediaStream | null>(
+    null
+  );
+  const [micStatus, setMicStatus] = useState<
+    "granted" | "denied" | "prompt" | "unsupported"
+  >("unsupported");
 
   // Start listening with Arabic language
   const startListeningArabic = () => {
@@ -35,7 +40,7 @@ const Dictaphone = () => {
     });
   };
 
-  useEffect(() => {
+  const onClick = useCallback(async () => {
     async function checkPermission() {
       // First, check if Permissions API is supported
       if (navigator.permissions) {
@@ -61,7 +66,23 @@ const Dictaphone = () => {
       }
     }
 
-    checkPermission();
+    await checkPermission();
+    startListeningArabic();
+  }, []);
+
+  useEffect(() => {
+    if (navigator.permissions) {
+      navigator.permissions
+        .query({ name: "microphone" as PermissionName })
+        .then((result) => {
+          setMicStatus(result.state);
+
+          result.onchange = () => setMicStatus(result.state);
+        })
+        .catch(() => setMicStatus("unsupported"));
+    } else {
+      setMicStatus("unsupported");
+    }
   }, []);
 
   return (
@@ -76,7 +97,7 @@ const Dictaphone = () => {
       </div>
       <div className="flex flex-wrap gap-2 mb-4">
         <button
-          onClick={startListeningArabic}
+          onClick={onClick}
           className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
         >
           ابدأ (السعودية)
