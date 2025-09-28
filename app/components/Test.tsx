@@ -16,8 +16,10 @@ const Dictaphone = () => {
     interimTranscript,
   } = config;
   console.log("configconfigconfig", config);
-  const [micPermission, setMicPermission] = useState("unknown");
-  const [micPermission2, setMicPermission2] = useState<MediaStream | null>(null);
+  const [micPermission, setMicStatus] = useState("unknown");
+  const [micPermission2] = useState<MediaStream | null>(
+    null
+  );
 
   // Start listening with Arabic language
   const startListeningArabic = () => {
@@ -36,32 +38,18 @@ const Dictaphone = () => {
   };
 
   useEffect(() => {
-    async function checkPermission() {
-      // First, check if Permissions API is supported
-      if (navigator.permissions) {
-        try {
-          // Try to request microphone
-          const test = await navigator.mediaDevices.getUserMedia({
-            audio: true,
-          });
-          setMicPermission("granted");
-          setMicPermission2(test);
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } catch (err: any) {
-          if (err.name === "NotAllowedError") {
-            setMicPermission("denied");
-          } else if (err.name === "NotFoundError") {
-            setMicPermission("no device");
-          } else {
-            setMicPermission("error");
-          }
-        }
-      } else {
-        console.warn("Permissions API not supported in this browser");
-      }
-    }
+    if (navigator.permissions) {
+      navigator.permissions
+        .query({ name: "microphone" as PermissionName })
+        .then((result) => {
+          setMicStatus(result.state);
 
-    checkPermission();
+          result.onchange = () => setMicStatus(result.state);
+        })
+        .catch(() => setMicStatus("unsupported"));
+    } else {
+      setMicStatus("unsupported");
+    }
   }, []);
 
   return (
