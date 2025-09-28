@@ -38,7 +38,6 @@ const Dictaphone = () => {
   };
 
   const checkPermission = useCallback(async () => {
-    if (navigator.permissions) {
       try {
         await navigator.mediaDevices.getUserMedia({
           audio: true,
@@ -54,9 +53,6 @@ const Dictaphone = () => {
           setMicStatus("unsupported");
         }
       }
-    } else {
-      console.warn("Permissions API not supported in this browser");
-    }
   }, []);
 
   const onClick = useCallback(async () => {
