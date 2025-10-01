@@ -14,6 +14,7 @@ const Dictaphone = () => {
     browserSupportsContinuousListening,
     isMicrophoneAvailable,
     interimTranscript,
+    finalTranscript,
   } = config;
   const [micStatus, setMicStatus] = useState<
     "granted" | "denied" | "prompt" | "unsupported"
@@ -38,30 +39,30 @@ const Dictaphone = () => {
   };
 
   const checkPermission = useCallback(async () => {
-      try {
-        await navigator.mediaDevices.getUserMedia({
-          audio: true,
-        });
-        setMicStatus("granted");
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } catch (err: any) {
-        if (err.name === "NotAllowedError") {
-          setMicStatus("denied");
-        } else if (err.name === "NotFoundError") {
-          setMicStatus("unsupported");
-        } else {
-          setMicStatus("unsupported");
-        }
+    try {
+      await navigator.mediaDevices.getUserMedia({
+        audio: true,
+      });
+      setMicStatus("granted");
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      if (err.name === "NotAllowedError") {
+        setMicStatus("denied");
+      } else if (err.name === "NotFoundError") {
+        setMicStatus("unsupported");
+      } else {
+        setMicStatus("unsupported");
       }
+    }
   }, []);
 
   const onClick = useCallback(async () => {
     startListeningArabic();
-  }, [checkPermission]);
+  }, []);
 
   const onClick2 = useCallback(async () => {
     startListeningEgyptian();
-  }, [checkPermission]);
+  }, []);
 
   useEffect(() => {
     if (navigator.permissions) {
@@ -85,7 +86,7 @@ const Dictaphone = () => {
     >
       <div className="mb-4">
         <p className="text-lg font-semibold text-gray-700">
-          الميكروفون: {listening ? "مفعل" : "معطل"}
+          الميكروفون: {browserListening ? "مفعل" : "معطل"}
         </p>
       </div>
       <div className="flex flex-wrap gap-2 mb-4">
@@ -122,7 +123,7 @@ const Dictaphone = () => {
           {transcript || "ابدأ بالتحدث..."}
         </p>
       </div>
-      {listening && (
+      {browserListening && (
         <div className="mt-3 text-center">
           <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800">
             🎤 يتم الاستماع...
@@ -137,6 +138,7 @@ const Dictaphone = () => {
       transcript: {transcript} <br />
       interimTranscript: {interimTranscript} <br />
       micStatus: {micStatus} <br />
+      finalTranscript: {finalTranscript} <br />
     </div>
   );
 };
