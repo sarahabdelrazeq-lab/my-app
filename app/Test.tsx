@@ -1,6 +1,8 @@
-'use client';
+"use client";
 
 export default function Test() {
+  if (typeof window === "undefined") return <></>;
+  
   return (
     <main
       style={{
@@ -17,7 +19,7 @@ export default function Test() {
           height: window.innerHeight,
         }}
       >
-        <div>
+        <div style={{ backgroundColor: "red" }}>
           test <br />
           test <br />
           test <br />
@@ -29,6 +31,7 @@ export default function Test() {
             overflow: "hidden",
             display: "flex",
             flexDirection: "column",
+            backgroundColor: "green",
           }}
         >
           <div
@@ -43,8 +46,11 @@ export default function Test() {
           ></div>
         </div>
 
-        <div>
-          <input />
+        <div style={{ backgroundColor: "red" }}>
+          <input placeholder="input" />
+          test <br />
+          test <br />
+          test <br />
         </div>
       </div>
     </main>
