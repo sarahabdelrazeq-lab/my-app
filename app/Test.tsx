@@ -9,7 +9,7 @@ export default function Test() {
         style={{
           display: "flex",
           flexDirection: "column",
-          height: 'dvh100',
+          height: '100dvh',
         }}
       >
         <div style={{ backgroundColor: "red" }}>
