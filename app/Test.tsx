@@ -2,16 +2,9 @@
 
 export default function Test() {
   if (typeof window === "undefined") return <></>;
-  
+
   return (
-    <main
-      style={{
-        flex: 1,
-        backgroundColor: "white",
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
+    <main>
       <div
         style={{
           display: "flex",
