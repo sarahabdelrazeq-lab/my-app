@@ -19,7 +19,7 @@ export default function Test() {
         visualViewportHeight: window.visualViewport?.height,
       });
 
-      const body = document.body.style;
+      const body = document.documentElement.style;
       const container = document.getElementById("container")?.style;
       if (container) {
         container.height = `${
