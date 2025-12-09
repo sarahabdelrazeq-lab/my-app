@@ -28,6 +28,9 @@ export default function Test() {
         body.height = `${
           window.visualViewport?.height || window.innerHeight
         }px`;
+
+        document.body.scrollTop = 0; // For Safari
+        document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE
       }
     };
 
@@ -43,7 +46,7 @@ export default function Test() {
   }, []);
 
   return (
-    <div style={{backgroundColor: 'yellow'}}>
+    <div style={{ backgroundColor: "yellow" }}>
       <div
         id="container"
         style={{
