@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 export default function Test() {
   const [height, setHeight] = useState<
-    Record<string, number | null | undefined | string>
+    Record<string, number | null | undefined>
   >({});
 
   if (typeof window === "undefined") {
@@ -14,11 +14,6 @@ export default function Test() {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
     const setHeightListener = () => {
-      setHeight({
-        innerHeight: window.innerHeight,
-        visualViewportHeight: window.visualViewport?.height,
-      });
-
       const body = document.documentElement.style;
       const container = document.getElementById("container")?.style;
       if (container) {
@@ -28,20 +23,33 @@ export default function Test() {
         body.height = `${
           window.visualViewport?.height || window.innerHeight
         }px`;
-
-        // document.body.scrollTop = 0; // For Safari
-        // document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE
       }
+
+      setHeight((pre) => {
+        if (
+          (pre.visualViewportHeight || 0) -
+            (window.visualViewport?.height || 0) >
+          100
+        ) {
+          document.body.scrollTop = 0; // For Safari
+          document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE
+        }
+
+        return {
+          innerHeight: window.innerHeight,
+          visualViewportHeight: window.visualViewport?.height,
+        };
+      });
     };
 
     window.visualViewport?.addEventListener("resize", setHeightListener);
-    // window.visualViewport?.addEventListener("scroll", setHeightListener); // important on iOS
+    window.visualViewport?.addEventListener("scroll", setHeightListener); // important on iOS
 
     setHeightListener(); // first run
 
     return () => {
       window.visualViewport?.removeEventListener("resize", setHeightListener);
-      // window.visualViewport?.removeEventListener("scroll", setHeightListener);
+      window.visualViewport?.removeEventListener("scroll", setHeightListener);
     };
   }, []);
 
