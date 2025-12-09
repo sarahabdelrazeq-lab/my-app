@@ -39,7 +39,7 @@ export default function Test() {
   }, []);
 
   return (
-    <main>
+    <div style={{backgroundColor: 'yellow'}}>
       <div
         id="container"
         style={{
@@ -85,6 +85,6 @@ export default function Test() {
           test <br />
         </div>
       </div>
-    </main>
+    </div>
   );
 }
