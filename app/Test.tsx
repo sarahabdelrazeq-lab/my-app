@@ -23,6 +23,10 @@ export default function Test() {
   //   return () => window.removeEventListener("resize", setHeight);
   // }, []);
 
+  if(typeof window === undefined) {
+    return <></>
+  }
+
   window.visualViewport?.addEventListener('resize', () => {
   document.documentElement.style.setProperty(
     '--vh',
