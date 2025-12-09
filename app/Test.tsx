@@ -37,7 +37,7 @@ export default function Test() {
         style={{
           display: "flex",
           flexDirection: "column",
-          height: height?.visualViewport || height.innerHeight,
+          height: height?.visualViewport || height.innerHeight || window.innerHeight,
           overflow: "hidden",
         }}
       >
