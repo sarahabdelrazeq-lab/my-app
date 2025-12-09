@@ -1,7 +1,27 @@
 "use client";
 
+// import { useEffect, useState } from "react";
+
 export default function Test() {
-  if (typeof window === "undefined") return <></>;
+  // const [height, setHeight] = useState(0);
+
+  // useEffect(() => {
+  //   document.documentElement.style.setProperty(
+  //     "--vh",
+  //     `${window.innerHeight}px`
+  //   );
+  //   const setHeight = () => {
+  //     document.documentElement.style.setProperty(
+  //       "--vh",
+  //       `${window.innerHeight}px`
+  //     );
+  //   };
+
+  //   window.addEventListener("resize", setHeight);
+  //   setHeight();
+
+  //   return () => window.removeEventListener("resize", setHeight);
+  // }, []);
 
   return (
     <main>
@@ -9,7 +29,7 @@ export default function Test() {
         style={{
           display: "flex",
           flexDirection: "column",
-          height: '100dvh',
+          height: "100vh",
         }}
       >
         <div style={{ backgroundColor: "red" }}>
