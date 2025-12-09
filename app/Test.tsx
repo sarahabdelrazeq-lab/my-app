@@ -18,6 +18,13 @@ export default function Test() {
         innerHeight: window.innerHeight,
         visualViewportHeight: window.visualViewport?.height,
       });
+
+      const container = document.getElementById("container")?.style;
+      if (container) {
+        container.height = `${
+          window.visualViewport?.height || window.innerHeight
+        }px`;
+      }
     };
 
     window.visualViewport?.addEventListener("resize", setHeightListener);
@@ -34,10 +41,10 @@ export default function Test() {
   return (
     <main>
       <div
+        id="container"
         style={{
           display: "flex",
           flexDirection: "column",
-          height: height?.visualViewport || height.innerHeight || window.innerHeight,
           overflow: "hidden",
         }}
       >
