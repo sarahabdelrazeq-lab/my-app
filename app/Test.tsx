@@ -35,13 +35,13 @@ export default function Test() {
     };
 
     window.visualViewport?.addEventListener("resize", setHeightListener);
-    window.visualViewport?.addEventListener("scroll", setHeightListener); // important on iOS
+    // window.visualViewport?.addEventListener("scroll", setHeightListener); // important on iOS
 
     setHeightListener(); // first run
 
     return () => {
       window.visualViewport?.removeEventListener("resize", setHeightListener);
-      window.visualViewport?.removeEventListener("scroll", setHeightListener);
+      // window.visualViewport?.removeEventListener("scroll", setHeightListener);
     };
   }, []);
 
