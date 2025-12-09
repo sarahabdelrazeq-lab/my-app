@@ -1,39 +1,33 @@
 "use client";
 
-// import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Test() {
-  // const [height, setHeight] = useState(0);
+  const [height, setHeight] = useState<
+    Record<string, number | null | undefined | string>
+  >({});
 
-  // useEffect(() => {
-  //   document.documentElement.style.setProperty(
-  //     "--vh",
-  //     `${window.innerHeight}px`
-  //   );
-  //   const setHeight = () => {
-  //     document.documentElement.style.setProperty(
-  //       "--vh",
-  //       `${window.innerHeight}px`
-  //     );
-  //   };
-
-  //   window.addEventListener("resize", setHeight);
-  //   setHeight();
-
-  //   return () => window.removeEventListener("resize", setHeight);
-  // }, []);
-
-  if(typeof window === 'undefined') {
-    return <></>
+  if (typeof window === "undefined") {
+    return <></>;
   }
 
-  window.visualViewport?.addEventListener('resize', () => {
-  document.documentElement.style.setProperty(
-    '--vh',
-    `${(window?.visualViewport?.height || 0) * 0.01}px`
-  );
-});
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  useEffect(() => {
+    setHeight({
+      innerHeight: window.innerHeight,
+      visualViewportHeight: window.visualViewport?.height,
+    });
 
+    const setHeightListener = () => {
+      setHeight({
+        innerHeight: window.innerHeight,
+        visualViewportHeight: window.visualViewport?.height,
+      });
+    };
+
+    window.addEventListener("resize", setHeightListener);
+    return () => window.removeEventListener("resize", setHeightListener);
+  }, []);
 
   return (
     <main>
@@ -42,7 +36,7 @@ export default function Test() {
           display: "flex",
           flexDirection: "column",
           height: "calc(var(--vh, 1vh) * 100)",
-          overflow: 'hidden',
+          overflow: "hidden",
         }}
       >
         <div style={{ backgroundColor: "red" }}>
@@ -60,7 +54,8 @@ export default function Test() {
             backgroundColor: "green",
           }}
         >
-          <div
+          {JSON.stringify(height)}
+          {/* <div
             style={{
               overflowY: "auto",
               WebkitOverflowScrolling: "touch",
@@ -69,7 +64,9 @@ export default function Test() {
               flex: 1,
               display: "flex",
             }}
-          ></div>
+          >
+
+          </div> */}
         </div>
 
         <div style={{ backgroundColor: "red" }}>
