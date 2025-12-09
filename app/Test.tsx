@@ -29,8 +29,8 @@ export default function Test() {
           window.visualViewport?.height || window.innerHeight
         }px`;
 
-        document.body.scrollTop = 0; // For Safari
-        document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE
+        // document.body.scrollTop = 0; // For Safari
+        // document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE
       }
     };
 
