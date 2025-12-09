@@ -23,7 +23,7 @@ export default function Test() {
   //   return () => window.removeEventListener("resize", setHeight);
   // }, []);
 
-  if(typeof window === undefined) {
+  if(typeof window === 'undefined') {
     return <></>
   }
 
