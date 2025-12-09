@@ -35,7 +35,7 @@ export default function Test() {
         style={{
           display: "flex",
           flexDirection: "column",
-          height: "calc(var(--vh, 1vh) * 100)",
+          height: "100vh",
           overflow: "hidden",
         }}
       >
