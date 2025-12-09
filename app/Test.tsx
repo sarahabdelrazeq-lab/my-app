@@ -30,6 +30,7 @@ export default function Test() {
           display: "flex",
           flexDirection: "column",
           height: "100svh",
+          overflow: 'hidden',
         }}
       >
         <div style={{ backgroundColor: "red" }}>
