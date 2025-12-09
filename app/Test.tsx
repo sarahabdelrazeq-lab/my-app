@@ -23,13 +23,21 @@ export default function Test() {
   //   return () => window.removeEventListener("resize", setHeight);
   // }, []);
 
+  window.visualViewport?.addEventListener('resize', () => {
+  document.documentElement.style.setProperty(
+    '--vh',
+    `${(window?.visualViewport?.height || 0) * 0.01}px`
+  );
+});
+
+
   return (
     <main>
       <div
         style={{
           display: "flex",
           flexDirection: "column",
-          height: "100svh",
+          height: "calc(var(--vh, 1vh) * 100)",
           overflow: 'hidden',
         }}
       >
