@@ -12,7 +12,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" style={{backgroundColor: 'pink'}}>
       <head>
         <meta
           name="viewport"
@@ -20,7 +20,7 @@ export default function RootLayout({
         />
       </head>
 
-      <body>{children}</body>
+      <body style={{backgroundColor: 'blue'}}>{children}</body>
     </html>
   );
 }
