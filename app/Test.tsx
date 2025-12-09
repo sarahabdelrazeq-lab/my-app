@@ -13,11 +13,6 @@ export default function Test() {
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
-    setHeight({
-      innerHeight: window.innerHeight,
-      visualViewportHeight: window.visualViewport?.height,
-    });
-
     const setHeightListener = () => {
       setHeight({
         innerHeight: window.innerHeight,
@@ -25,8 +20,15 @@ export default function Test() {
       });
     };
 
-    window.addEventListener("resize", setHeightListener);
-    return () => window.removeEventListener("resize", setHeightListener);
+    window.visualViewport?.addEventListener("resize", setHeightListener);
+    window.visualViewport?.addEventListener("scroll", setHeightListener); // important on iOS
+
+    setHeightListener(); // first run
+
+    return () => {
+      window.visualViewport?.removeEventListener("resize", setHeightListener);
+      window.visualViewport?.removeEventListener("scroll", setHeightListener);
+    };
   }, []);
 
   return (
