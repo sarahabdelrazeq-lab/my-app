@@ -12,15 +12,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" style={{backgroundColor: 'pink'}}>
+    <html lang="en" style={{ backgroundColor: "pink" }}>
       <head>
         <meta
           name="viewport"
-          content="width=device-width, initial-scale=1, maximum-scale=1"
+          content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
         />
       </head>
 
-      <body style={{backgroundColor: 'blue'}}>{children}</body>
+      <body style={{ backgroundColor: "blue" }}>{children}</body>
     </html>
   );
 }
